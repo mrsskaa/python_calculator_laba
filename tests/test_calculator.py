@@ -1,0 +1,35 @@
+import pytest
+from src.calculator_E3 import calculate
+from src.errrors import *
+
+
+def test_cool():
+    assert calculate('2+2') == 4.0
+    assert calculate('2-1') == 1.0
+    assert calculate('2*2') == 4.0
+    assert calculate('2/2') == 1.0
+    assert calculate('3//2') == 1.0
+    assert calculate('3%2') == 1.0
+    assert calculate(' 2            + 2 - 5// 2 * 3       % 8 /3') == 2.0
+    assert calculate('-2+2') == 0.0
+    assert calculate('20/5%3+5/4') == 2.25
+    assert calculate('+5//2+4%8/5+-7') == -4.2
+
+def test_errors():
+    with pytest.raises(ZeroDivisionError):
+        calculate('1/0')
+
+    with pytest.raises(ExtraneousError):
+        calculate('tralaleylotralala')
+
+    with pytest.raises(EmptyError):
+        calculate('')
+
+    with pytest.raises(JointOperandsError):
+        calculate('1**2')
+
+    with pytest.raises(BadInputError):
+        calculate('2+2+')
+
+    with pytest.raises(BadDigit):
+        calculate('1/2//3')
