@@ -1,6 +1,6 @@
 import pytest
 from src.calculator_E3 import calculate
-from src.errrors import *
+from src.errrors import ExtraneousError, EmptyError, JointOperandsError, BadInputError, BadDigit
 
 
 
