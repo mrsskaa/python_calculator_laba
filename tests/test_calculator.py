@@ -3,10 +3,11 @@ from src.calculator_E3 import calculate
 from src.errrors import *
 
 
+
 def test_cool():
     assert calculate('2+2') == 4.0
-    assert calculate('2-1') == 1.0
-    assert calculate('2*2') == 4.0
+    assert calculate('2.5-1.5') == 1.0
+    assert calculate('1.2*1,2') == 1.44
     assert calculate('2/2') == 1.0
     assert calculate('3//2') == 1.0
     assert calculate('3%2') == 1.0
@@ -30,6 +31,7 @@ def test_errors():
 
     with pytest.raises(BadInputError):
         calculate('2+2+')
+        calculate('10.')
 
     with pytest.raises(BadDigit):
-        calculate('1/2//3')
+        calculate('1.5//1.5')

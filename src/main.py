@@ -1,6 +1,5 @@
 from src.calculator_E3 import calculate
 
-
 def main() -> None:
     """
     Обязательнная составляющая программы. Является точкой входа в приложение
