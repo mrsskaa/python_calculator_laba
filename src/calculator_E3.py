@@ -4,80 +4,84 @@ from src.constants import all_operands
 from src.errrors import ExtraneousError, EmptyError, JointOperandsError, BadInputError, BadDigit, NotDigitError
 from typing import Union
 
-def multiplyy(n: list[str], stek: list[str], i: int) -> tuple[list[str], list[str]]:
+def multiply(n: list[str], stk: float, i: int) -> tuple[bool, list[str]]:
+    """
+    Функция совершает умножение
+    :param n: массив n
+    :param stk: stek[-1] (последний элемент, лежащий в стеке)
+    :param i: индекс, такой что n[i] = '*'
+    :return: True/False (есть унарный минус/нет) и полученное при произведении
+    """
     if n[i + 1] == '-':
-        stek.append(float(float(stek[-1]) * float(n[i + 2]) * -1))
-        stek.pop(-2)
-        n.pop(i + 1)
-        n.pop(i + 1)
+        return True, float(float(stk) * float(n[i + 2]) * -1)
+
     else:
-        stek.append(float(float(stek[-1]) * float(n[i + 1])))
-        stek.pop(-2)
-        n.pop(i + 1)
+        return False, (float(stk) * float(n[i + 1]))
 
 
-    return stek, n
-
-
-def divisionn(n: list[str], stek: list[str], i: int) -> tuple[list[str], list[str]]:
+def division(n: list[str], stk: float, i: int) -> tuple[bool, list[str]]:
+    """
+    Функция совершает деление
+    :param n: массив n
+    :param stk: stek[-1] (последний элемент, лежащий в стеке)
+    :param i: индекс, такой что n[i] = '/'
+    :return: True/False (есть унарный минус/нет) и полученное при делении или 'zero' (происходит деление на 0)
+    """
     if error_0(n, i) == False:
         return 'zero'
 
     if n[i + 1] == '-':
-        stek.append(float(stek[-1]) / float(n[i + 2]) * -1)
-        stek.pop(-2)
-        n.pop(i + 1)
-        n.pop(i + 1)
+        return True, float(stk) / float(n[i + 2]) * -1
 
     else:
-        stek.append(float(stek[-1]) / float(n[i + 1]))
-        stek.pop(-2)
-        n.pop(i + 1)
-
-    return stek, n
+        return False, float(stk) / float(n[i + 1])
 
 
-def procent(n: list[str], stek: list[str], i: int) ->  str | tuple[list[str], list[str]]:
+
+def procent(n: list[str], stk: float, i: int) ->  str | tuple[bool, list[str]]:
+    """
+    Функция совершает взятие остатка
+    :param n: массив n
+    :param stk: stek[-1] (последний элемент, лежащий в стеке)
+    :param i: индекс, такой что n[i] = '%'
+    :return: True/False (есть унарный минус/нет) и полученное при взятии остатка
+    или 'zero' - взятие остатка на 0 (кто так делает - позорник)
+    или 'not int' - если человек пытается взять остаток на/от float
+    """
     if error_0(n, i) == False:
         return 'zero'
 
-    if error_bad_digit(stek[-1]) == False:
+    if error_bad_digit(stk) == False:
         return 'not int'
 
     if n[i + 1] == '-':
-        stek.append(float(int(stek[-1]) % (-1 * int(n[i + 2]))))
-        stek.pop(-2)
-        n.pop(i + 1)
-        n.pop(i + 1)
+        return True, float(int(stk) % (-1 * int(n[i + 2])))
 
     else:
-        stek.append(float(stek[-1]) % int(n[i + 1]))
-        stek.pop(-2)
-        n.pop(i + 1)
-
-    return stek, n
+       return False, float(int(stk) % int(n[i + 1]))
 
 
-def integer_division(n: list[str], stek: list[str], i: int) -> str |  tuple[list[str], list[str]]:
+def integer_division(n: list[str], stk: float, i: int) -> str |  tuple[bool, list[str]]:
+    """
+    Функция совершает умножение
+    :param n: массив n
+    :param stk: stek[-1] (последний элемент, лежащий в стеке)
+    :param i: индекс, такой что n[i] = '#'
+    :return: True/False (есть унарный минус/нет) и полученное при делении нацело,
+    или 'zero' - деление на 0 (фууу),
+    или 'not int' - если человек пытается поделить нацело float/ на float
+    """
     if error_0(n, i) == False:
         return 'zero'
 
-    if error_bad_digit(stek[-1]) == False:
+    if error_bad_digit(stk) == False:
         return 'not int'
 
     if n[i + 1] == '-':
-        stek.append(float(int(stek[-1]) // int(n[i + 2]) * -1))
-        stek.pop(-2)
-        n.pop(i + 1)
-        n.pop(i + 1)
+        return True, float(int(stk) // int(n[i + 2]) * -1)
 
     else:
-        stek.append(float(int(stek[-1])) // int(n[i + 1]))
-        stek.pop(-2)
-        n.pop(i + 1)
-
-    return stek, n
-
+        return False, float(int(stk)) // int(n[i + 1])
 
 def is_float(s: str) -> bool:
     """
@@ -99,7 +103,7 @@ def error_extraneous(n: str) -> bool:
     :return: либо True (ошибка), либо False (который означает, что все ок)
     """
     for i in n:
-        if not (i.isnumeric()) and i not in (all_operands or ' .'):
+        if not (i.isnumeric()) and i not in (all_operands + '., '):
             return True
 
     return False
@@ -160,7 +164,7 @@ def error_joint_operands(n: str) -> bool:
 def edit_2(n: str) -> str:
     """
     функция заменяет // на #, убирает унарные знаки, преобразовывает строку n в массив и убирает из него элементы = ''
-    :param n: отредактированная функция n
+    :param n: отредактированная строка n
     :return: массив n
     """
     n = n.replace('+ -', '-')
@@ -244,7 +248,7 @@ def count(n: list[str]) -> Union[None, tuple[list[float], list[str]]]:
     """
     stek: list[float] = []
     operation: list[str] = []
-    slovar = {'*': multiplyy, '/': divisionn, '%': procent, '#': integer_division}
+    slovar = {'*': multiply, '/': division, '%': procent, '#': integer_division}
 
     for i in range(len(n)):
         if i < len(n):
@@ -258,15 +262,21 @@ def count(n: list[str]) -> Union[None, tuple[list[float], list[str]]]:
                 operation.append(n[i])
 
             else:
-                result = slovar[n[i]](stek, n, i)
+                result = slovar[n[i]](n, stek[-1], i)
+
                 if result == 'zero':
                     return 'zero'
                 elif result == 'not int':
                     return 'not int'
-                elif result == 'bad input':
-                    return 'bad input'
+
                 else:
-                    stek, n = result
+                    stek.append(result[1])
+                    stek.pop(-2)
+                    n.pop(i + 1)
+
+                    if result[0]:
+                        n.pop(i + 1)
+
         else:
             break
 
@@ -303,17 +313,13 @@ def calculate(n: str) -> float | None:
 
     st_op = count(n)
 
-    if st_op == 1:
+    if st_op == 'zero':
         raise ZeroDivisionError('Я ВСЕ БИТЮКОВУ РАССКАЖУ')
-
     elif st_op == 'not int':
         raise BadDigit('НЕЛЬЗЯ ПРОВОДИТЬ ОПЕРАЦИИ //,% НАД FLOAT')
-    elif st_op == 'zero':
-        raise BadInputError('НЕККОРЕКТНЫЙ ВВОД')
     elif st_op == 'not digit':
         raise NotDigitError('НЕПРАВИЛЬНЫЙ ВВОД ВЕЩЕСТВЕННОГО ЧИСЛА')
-    elif st_op == 'bad input':
-        raise BadInputError('НЕККОРЕКТНЫЙ ВВОД')
+
     else:
         if unar == True:
             st_op[0][0] *= -1

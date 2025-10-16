@@ -1,7 +1,6 @@
 import pytest
 from src.calculator_E3 import calculate
-from src.errrors import ExtraneousError, EmptyError, JointOperandsError, BadInputError, BadDigit
-
+from src.errrors import ExtraneousError, EmptyError, JointOperandsError, BadInputError, BadDigit, NotDigitError
 
 
 def test_cool():
@@ -31,6 +30,8 @@ def test_errors():
 
     with pytest.raises(BadInputError):
         calculate('2+2+')
+
+    with pytest.raises(NotDigitError):
         calculate('10.')
 
     with pytest.raises(BadDigit):
