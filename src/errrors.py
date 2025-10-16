@@ -16,3 +16,9 @@ class BadInputError(Exception):
 
 class BadDigit(Exception):
     pass
+
+
+class NotDigitError(Exception):
+    pass
+
+
