@@ -252,7 +252,7 @@ def count(n: list[str]) -> Union[None, tuple[list[float], list[str]]]:
 
     for i in range(len(n)):
         if i < len(n):
-            if n[i][-1] == '.':
+            if n[i][-1] == '.' or n[i].count('.') > 1:
                 return 'not digit'
 
             if is_float(n[i]):
