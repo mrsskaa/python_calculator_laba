@@ -85,9 +85,9 @@ def integer_division(n: list[str], stk: float, i: int) -> str |  tuple[bool, lis
 
 def is_float(s: str) -> bool:
     """
-    функция проверяет является ли строка float
-    :param digit: строка, которую нужно проверить
-    :return:  либо 1 (да), либо 0 (нет)
+    функция проверяет, является ли строка float
+    :param s: строка, которую нужно проверить
+    :return:  либо True (да), либо False (нет)
     """
     try:
         float(s)
@@ -220,7 +220,7 @@ def error_bad_input(n: list[str]) -> Union[bool, tuple[list[str], bool]]:
 
 def error_0(n: list[str], i: int) -> bool:
     """
-    функция проверяет является ли следующий элемент 0, для проверки происходит ли деление/взяие остатка на 0
+    функция проверяет, является ли следующий элемент 0, для проверки происходит ли деление/взяие остатка на 0
     :param n: массив n
     :param i: индекс знака (/#%)
     :return: либо True (все ок), либо False (ошибка)
@@ -242,9 +242,9 @@ def error_bad_digit(digit: float) -> bool:
 
 def count(n: list[str]) -> Union[None, tuple[list[float], list[str]]]:
     """
-    Функция выполняет */#%, закидывает в два стека чисел и операций (+-), также вызывает проверку деления на 0 и %,// над float
+    Функция выполняет '*/#%', закидывает в два стека чисел и операций ('+-'), также вызывает проверку деления на 0 и '%', '//' над float
     :param n: массив n
-    :return:  stek - массив чисел, operation - массив операций (+-) или ошибку (при делении на ноль)
+    :return:  stek - массив чисел, operation - массив операций ('+-') или ошибку (при делении на ноль)
     """
     stek: list[float] = []
     operation: list[str] = []
